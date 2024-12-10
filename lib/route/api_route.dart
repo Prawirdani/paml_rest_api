@@ -1,3 +1,4 @@
+import 'package:paml_rest_api/app/http/controllers/products_controller.dart';
 import 'package:paml_rest_api/app/http/controllers/vendors_controller.dart';
 import 'package:vania/vania.dart';
 
@@ -13,6 +14,22 @@ class ApiRoute implements Route {
     Router.get("/vendors/{id}", VendorsController().show);
     Router.put("/vendors/{id}", VendorsController().update);
     Router.delete("/vendors/{id}", VendorsController().destroy);
+
+    // Products Routes
+    Router.get("/products", ProductsController().index);
+    Router.post("/products", ProductsController().store);
+    Router.get("/products/{id}", ProductsController().show);
+    Router.put("/products/{id}", ProductsController().update);
+    Router.delete("/products/{id}", ProductsController().destroy);
+    Router.post("/products/{productId}/notes", ProductsController().storeNote);
+    Router.put(
+      "/products/{productId}/notes/{noteId}",
+      ProductsController().updateNote,
+    );
+    Router.delete(
+      "/products/{productId}/notes/{noteId}",
+      ProductsController().deleteNote,
+    );
 
     Router.get("/ping", () {
       return Response.json({"message": "Hello Vania"});
