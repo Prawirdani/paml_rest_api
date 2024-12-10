@@ -21,6 +21,22 @@ class VendorsController extends Controller {
   Future<Response> store(Request req) async {
     try {
       validateRequestBody(req);
+
+      // Check nama vendor apakah telah digunakan.
+      final duplicateName = await Vendors()
+          .query()
+          .where('vend_name', '=', req.body['vend_name'])
+          .first();
+      if (duplicateName != null) {
+        return JsonResponse.send(
+          errors: {
+            'vend_name': "Nama vendor telah digunakan",
+          },
+          status: HttpStatus.conflict,
+        );
+      }
+
+      // Insert data vendor
       final insertedId = await Vendors().query().insertGetId(req.body);
       final vendor =
           await Vendors().query().where('vend_id', "=", insertedId).first();
@@ -37,9 +53,10 @@ class VendorsController extends Controller {
 
   Future<Response> show(int id) async {
     try {
+      // Check eksistensi data vendor berdasarkan id
       final vendor = await Vendors().query().where('vend_id', "=", id).first();
       if (vendor == null) {
-        return vendorNotFound();
+        return JsonResponse.notFound("Vendor dengan ID $id tidak ditemukan");
       }
 
       return JsonResponse.send(
@@ -55,11 +72,27 @@ class VendorsController extends Controller {
     try {
       validateRequestBody(request, isUpdate: true);
 
-      final vendor = await Vendors().query().where('vend_id', "=", id).first();
-      if (vendor == null) {
-        return vendorNotFound();
+      // Check nama vendor apakah telah digunakan.
+      final duplicateName = await Vendors()
+          .query()
+          .where('vend_name', '=', request.body['vend_name'])
+          .first();
+      if (duplicateName != null) {
+        return JsonResponse.send(
+          errors: {
+            'vend_name': "Nama vendor telah digunakan",
+          },
+          status: HttpStatus.conflict,
+        );
       }
 
+      // Check eksistensi data vendor berdasarkan id
+      final vendor = await Vendors().query().where('vend_id', "=", id).first();
+      if (vendor == null) {
+        return JsonResponse.notFound("Vendor dengan ID $id tidak ditemukan");
+      }
+
+      // Update data vendor
       await Vendors().query().where('vend_id', "=", id).update(request.body);
       final updatedVendor =
           await Vendors().query().where('vend_id', "=", id).first();
@@ -75,23 +108,19 @@ class VendorsController extends Controller {
 
   Future<Response> destroy(int id) async {
     try {
+      // Check eksistensi data vendor berdasarkan id
       final vendor = await Vendors().query().where('vend_id', "=", id).first();
       if (vendor == null) {
-        return vendorNotFound();
+        return JsonResponse.notFound("Vendor dengan ID $id tidak ditemukan");
       }
+
+      // Hapus data vendor
       await Vendors().query().where('vend_id', "=", id).delete();
+
       return JsonResponse.send(message: "Vendor Deleted");
     } catch (e) {
       return JsonResponse.handleError(e);
     }
-  }
-
-  Response vendorNotFound() {
-    return JsonResponse.send(
-      message: 'Data vendor tidak ditemukan',
-      data: null,
-      status: HttpStatus.notFound,
-    );
   }
 
   // JSON Request body validator untuk method store dan update
