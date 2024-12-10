@@ -8,8 +8,13 @@ class CreateProductsTable extends Migration {
       bigIncrements('prod_id');
       primary("prod_id");
       bigInt('vend_id', unsigned: true);
-      foreign("vend_id", "vendors", "vend_id", constrained: true);
-      string('prod_name', length: 25);
+      foreign(
+        "vend_id",
+        "vendors",
+        "vend_id",
+        onDelete: "CASCADE",
+      );
+      string('prod_name', unique: true, length: 25);
       integer('prod_price');
       text('prod_desc');
     });

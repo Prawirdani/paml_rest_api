@@ -7,8 +7,7 @@ class CreateVendorsTable extends Migration {
     await createTableNotExists('vendors', () {
       bigIncrements("vend_id");
       primary("vend_id");
-
-      string("vend_name", length: 50, nullable: false);
+      string("vend_name", unique: true, length: 50, nullable: false);
       text("vend_address");
       text("vend_kota");
       string("vend_state", length: 5);

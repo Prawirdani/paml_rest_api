@@ -8,7 +8,7 @@ class CreateProductsNotesTable extends Migration {
       bigIncrements("note_id");
       primary("note_id");
       bigInt("prod_id", unsigned: true);
-      foreign("prod_id", "products", "prod_id");
+      foreign("prod_id", "products", "prod_id", onDelete: "CASCADE");
       date("note_date");
       text("note_text");
     });

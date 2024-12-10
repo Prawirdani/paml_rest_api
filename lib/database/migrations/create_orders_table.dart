@@ -9,7 +9,7 @@ class CreateOrdersTable extends Migration {
       primary("order_num");
       date("order_date", nullable: false);
       bigInt("cust_id", unsigned: true);
-      foreign("cust_id", "customers", "cust_id");
+      foreign("cust_id", "customers", "cust_id", onDelete: "CASCADE");
     });
   }
 
