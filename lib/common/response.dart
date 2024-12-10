@@ -21,6 +21,10 @@ class JsonResponse {
     );
   }
 
+  static Response notFound(String message) {
+    return JsonResponse.send(message: message, status: HttpStatus.notFound);
+  }
+
   static Response handleError(Object e) {
     print(e);
     return e is ValidationException
