@@ -39,11 +39,7 @@ class VendorsController extends Controller {
     try {
       final vendor = await Vendors().query().where('vend_id', "=", id).first();
       if (vendor == null) {
-        return JsonResponse.send(
-          message: 'Data vendor tidak ditemukan',
-          data: null,
-          status: HttpStatus.notFound,
-        );
+        return vendorNotFound();
       }
 
       return JsonResponse.send(
@@ -61,11 +57,7 @@ class VendorsController extends Controller {
 
       final vendor = await Vendors().query().where('vend_id', "=", id).first();
       if (vendor == null) {
-        return JsonResponse.send(
-          message: 'Data vendor tidak ditemukan',
-          data: null,
-          status: HttpStatus.notFound,
-        );
+        return vendorNotFound();
       }
 
       await Vendors().query().where('vend_id', "=", id).update(request.body);
@@ -85,11 +77,7 @@ class VendorsController extends Controller {
     try {
       final vendor = await Vendors().query().where('vend_id', "=", id).first();
       if (vendor == null) {
-        return JsonResponse.send(
-          message: 'Data vendor tidak ditemukan',
-          data: null,
-          status: HttpStatus.notFound,
-        );
+        return vendorNotFound();
       }
       await Vendors().query().where('vend_id', "=", id).delete();
       return JsonResponse.send(message: "Vendor Deleted");
@@ -98,9 +86,17 @@ class VendorsController extends Controller {
     }
   }
 
+  Response vendorNotFound() {
+    return JsonResponse.send(
+      message: 'Data vendor tidak ditemukan',
+      data: null,
+      status: HttpStatus.notFound,
+    );
+  }
+
   // JSON Request body validator untuk method store dan update
   // Aturan validasi dibedakan antara store dan update
-  validateRequestBody(Request req, {bool isUpdate = false}) {
+  void validateRequestBody(Request req, {bool isUpdate = false}) {
     final nonRequiredMessages = {
       'vend_name.max_length': 'Nama vendor tidak boleh lebih dari 50 karakter',
       'vend_state.max_length': 'State vendor tidak boleh lebih dari 5 karakter',
