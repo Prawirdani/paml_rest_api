@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:vania/src/exception/validation_exception.dart';
 import 'package:vania/vania.dart';
 
+// Helper class untuk mengirim response JSON
 class JsonResponse {
   static Response send({
     String? message,
@@ -22,7 +23,10 @@ class JsonResponse {
   }
 
   static Response notFound(String message) {
-    return JsonResponse.send(message: message, status: HttpStatus.notFound);
+    return JsonResponse.send(
+      message: message,
+      status: HttpStatus.notFound,
+    );
   }
 
   static Response handleError(Object e) {
