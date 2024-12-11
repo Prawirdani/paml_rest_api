@@ -86,7 +86,7 @@ class CustomersController extends Controller {
           .query()
           .where('cust_telp', '=', request.body['cust_telp'])
           .first();
-      if (duplicatePhone != null) {
+      if (duplicatePhone != null && duplicatePhone['cust_id'] != id) {
         return JsonResponse.send(
           message: 'Conflict unique constraint',
           errors: {

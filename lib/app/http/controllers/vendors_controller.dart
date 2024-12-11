@@ -29,6 +29,7 @@ class VendorsController extends Controller {
           .first();
       if (duplicateName != null) {
         return JsonResponse.send(
+          message: 'Conflict unique constraint',
           errors: {
             'vend_name': "Nama vendor telah digunakan",
           },
@@ -72,18 +73,29 @@ class VendorsController extends Controller {
     try {
       validateRequestBody(request, isUpdate: true);
 
-      // Check nama vendor apakah telah digunakan.
-      final duplicateName = await Vendors()
-          .query()
-          .where('vend_name', '=', request.body['vend_name'])
-          .first();
-      if (duplicateName != null) {
+      if (request.body.isEmpty) {
         return JsonResponse.send(
           errors: {
-            'vend_name': "Nama vendor telah digunakan",
+            'body': 'Minimal satu field yang akan diupdate',
           },
-          status: HttpStatus.conflict,
+          status: HttpStatus.badRequest,
         );
+      }
+
+      // Check nama vendor apakah telah digunakan.
+      if (request.body.containsKey('vend_name')) {
+        final duplicateName = await Vendors()
+            .query()
+            .where('vend_name', '=', request.body['vend_name'])
+            .first();
+        if (duplicateName != null && duplicateName['vend_id'] != id) {
+          return JsonResponse.send(
+            errors: {
+              'vend_name': "Nama vendor telah digunakan",
+            },
+            status: HttpStatus.conflict,
+          );
+        }
       }
 
       // Check eksistensi data vendor berdasarkan id

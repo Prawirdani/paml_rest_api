@@ -242,13 +242,18 @@ class OrdersController extends Controller {
         'size.integer': 'Size harus berupa angka',
       });
 
-      // Check order item
+      // Check data order dan order item
+      final order =
+          await Orders().query().where('order_num', "=", orderNum).first();
+      if (order == null) {
+        return JsonResponse.notFound(
+          "Order dengan nomor $orderNum tidak ditemukan",
+        );
+      }
       final orderItem = await OrderItems()
           .query()
-          .where('order_num', "=", orderNum)
           .where('order_item_id', "=", itemId)
           .first();
-
       if (orderItem == null) {
         return JsonResponse.notFound(
           "Order item dengan ID $itemId tidak ditemukan",
@@ -277,10 +282,16 @@ class OrdersController extends Controller {
 
   Future<Response> destroyItem(int orderNum, int itemId) async {
     try {
-      // Check order item
+      // Check data order dan order item
+      final order =
+          await Orders().query().where('order_num', "=", orderNum).first();
+      if (order == null) {
+        return JsonResponse.notFound(
+          "Order dengan nomor $orderNum tidak ditemukan",
+        );
+      }
       final orderItem = await OrderItems()
           .query()
-          .where('order_num', "=", orderNum)
           .where('order_item_id', "=", itemId)
           .first();
 

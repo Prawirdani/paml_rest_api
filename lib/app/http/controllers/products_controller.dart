@@ -94,11 +94,11 @@ class ProductsController extends Controller {
       validateRequestBody(request, isUpdate: true);
 
       // Check duplikasi nama produk
-      final duplicateProductName = await Products()
+      final existsProductName = await Products()
           .query()
           .where("prod_name", "=", request.body['prod_name'])
           .first();
-      if (duplicateProductName != null) {
+      if (existsProductName != null && existsProductName['prod_id'] != id) {
         return JsonResponse.send(
           message: "Conflict unique constraint",
           errors: {
@@ -196,15 +196,19 @@ class ProductsController extends Controller {
         'note_text.string': "Catatan harus bertipe data String"
       });
 
-      // Check eksistensi data note product berdasarkan productId dan noteId
-      final productNote = await ProductNotes()
-          .query()
-          .where('note_id', '=', noteId)
-          .where('prod_id', '=', productId)
-          .first();
-      if (productNote == null) {
+      // Check data product dan product note
+      final product =
+          await Products().query().where("prod_id", "=", productId).first();
+      if (product == null) {
         return JsonResponse.notFound(
             "Product dengan ID $productId tidak ditemukan");
+      }
+
+      final productNote =
+          await ProductNotes().query().where('note_id', '=', noteId).first();
+      if (productNote == null) {
+        return JsonResponse.notFound(
+            "Product Note dengan ID $noteId tidak ditemukan");
       }
 
       // Update data note product
@@ -228,17 +232,22 @@ class ProductsController extends Controller {
   Future<Response> deleteNote(
       Request request, int productId, int noteId) async {
     try {
-      // Check eksistensi data note product berdasarkan productId dan noteId
-      final productNote = await ProductNotes()
-          .query()
-          .where('note_id', '=', noteId)
-          .where('prod_id', '=', productId)
-          .first();
-      if (productNote == null) {
+      // Check data product dan product note
+      final product =
+          await Products().query().where("prod_id", "=", productId).first();
+      if (product == null) {
         return JsonResponse.notFound(
             "Product dengan ID $productId tidak ditemukan");
       }
 
+      final productNote =
+          await ProductNotes().query().where('note_id', '=', noteId).first();
+      if (productNote == null) {
+        return JsonResponse.notFound(
+            "Product Note dengan ID $noteId tidak ditemukan");
+      }
+
+      // Hapus data product note
       await ProductNotes().query().where('note_id', '=', noteId).delete();
 
       return JsonResponse.send(
