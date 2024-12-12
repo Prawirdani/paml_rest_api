@@ -128,6 +128,16 @@
 				{
 					"name": "Index [List Customers]",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjoxLFwibmFtZVwiOlwiQWRpbCBQcmF3aXJkYW5pXCIsXCJlbWFpbFwiOlwicHJhd2lyZGFuaUBtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpcIjk2YVZxZDlOUFMzMGI5aWh4RDZUNjZpYXFUWXZSenVXWHZYSWRKdVNMRWZQWXFtenorZFRtQUhoeUpHaHFtRUI3bmN3eWh3TlVSeDQ0MWJwN0lBRDlva0hqQT09XCIsXCJjcmVhdGVkX2F0XCI6XCIyMDI0LTEyLTEzIDAxOjEzOjQ5LjBcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjQtMTItMTMgMDE6MTM6NDkuMFwiLFwiZGVsZXRlZF9hdFwiOm51bGx9IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImlkIjoxLCJpYXQiOjE3MzQwMjc0NzgsImV4cCI6MTczNDAzMTA3OH0.kfmM7NlfR7qyUjinJWIQyJ86C8F9VNlkrDAR3Qsfipg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -165,11 +175,21 @@
 				{
 					"name": "Store [Create Customer]",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjoxLFwibmFtZVwiOlwiQWRpbCBQcmF3aXJkYW5pXCIsXCJlbWFpbFwiOlwicHJhd2lyZGFuaUBtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpcIjk2YVZxZDlOUFMzMGI5aWh4RDZUNjZpYXFUWXZSenVXWHZYSWRKdVNMRWZQWXFtenorZFRtQUhoeUpHaHFtRUI3bmN3eWh3TlVSeDQ0MWJwN0lBRDlva0hqQT09XCIsXCJjcmVhdGVkX2F0XCI6XCIyMDI0LTEyLTEzIDAxOjEzOjQ5LjBcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjQtMTItMTMgMDE6MTM6NDkuMFwiLFwiZGVsZXRlZF9hdFwiOm51bGx9IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImlkIjoxLCJpYXQiOjE3MzQwMjc0NzgsImV4cCI6MTczNDAzMTA3OH0.kfmM7NlfR7qyUjinJWIQyJ86C8F9VNlkrDAR3Qsfipg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\n    \"cust_name\": \"Lorem\",\n    \"cust_address\": \"Lorem\",\n    \"cust_city\": \"Ipsum\",\n    \"cust_state\": \"Ipsum\",\n    \"cust_zip\": \"Ipsum\",\n    \"cust_country\": \"Ipsum\",\n    \"cust_telp\": \"Ipsum\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -398,16 +418,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/orders/7/items/5",
+							"raw": "{{BASE_URL}}/api/orders/8/items/7",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
 								"orders",
-								"7",
+								"8",
 								"items",
-								"5"
+								"7"
 							]
 						}
 					},
@@ -612,22 +632,216 @@
 			]
 		},
 		{
-			"name": "Ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/ping",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"ping"
-					]
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjoxLFwibmFtZVwiOlwiQWRpbCBQcmF3aXJkYW5pXCIsXCJlbWFpbFwiOlwicHJhd2lyZGFuaUBtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpcIjk2YVZxZDlOUFMzMGI5aWh4RDZUNjZpYXFUWXZSenVXWHZYSWRKdVNMRWZQWXFtenorZFRtQUhoeUpHaHFtRUI3bmN3eWh3TlVSeDQ0MWJwN0lBRDlva0hqQT09XCIsXCJjcmVhdGVkX2F0XCI6XCIyMDI0LTEyLTEzIDAxOjEzOjQ5LjBcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjQtMTItMTMgMDE6MTM6NDkuMFwiLFwiZGVsZXRlZF9hdFwiOm51bGx9IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImlkIjoxLCJpYXQiOjE3MzQwMjcyOTMsImV4cCI6MTczNDAzMDg5M30.KozhiQV_P_--hunzn9DrP4T-09tXAcjECvpPI7aYnAQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/auth/logout",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"prawirdani@mail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZSI6InJlZnJlc2hfdG9rZW4iLCJpYXQiOjE3MzQwMjcyOTMsImV4cCI6MTczNjYxOTI5M30.oLjxaFIOGWObwKkVjWf-Tnsd4pwpte0KmfxGvTF-zrQsdsd",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/auth/refresh-token",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Current User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjoxLFwibmFtZVwiOlwiQWRpbCBQcmF3aXJkYW5pXCIsXCJlbWFpbFwiOlwicHJhd2lyZGFuaUBtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpcIjk2YVZxZDlOUFMzMGI5aWh4RDZUNjZpYXFUWXZSenVXWHZYSWRKdVNMRWZQWXFtenorZFRtQUhoeUpHaHFtRUI3bmN3eWh3TlVSeDQ0MWJwN0lBRDlva0hqQT09XCIsXCJjcmVhdGVkX2F0XCI6XCIyMDI0LTEyLTEzIDAxOjEzOjQ5LjBcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjQtMTItMTMgMDE6MTM6NDkuMFwiLFwiZGVsZXRlZF9hdFwiOm51bGx9IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImlkIjoxLCJpYXQiOjE3MzQwMjc0NzgsImV4cCI6MTczNDAzMTA3OH0.kfmM7NlfR7qyUjinJWIQyJ86C8F9VNlkrDAR3Qsfipg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/users/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjoxLFwibmFtZVwiOlwiQWRpbCBQcmF3aXJkYW5pXCIsXCJlbWFpbFwiOlwicHJhd2lyZGFuaUBtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpcIjk2YVZxZDlOUFMzMGI5aWh4RDZUNjZpYXFUWXZSenVXWHZYSWRKdVNMRWZQWXFtenorZFRtQUhoeUpHaHFtRUI3bmN3eWh3TlVSeDQ0MWJwN0lBRDlva0hqQT09XCIsXCJjcmVhdGVkX2F0XCI6XCIyMDI0LTEyLTEzIDAxOjEzOjQ5LjBcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjQtMTItMTMgMDE6MTM6NDkuMFwiLFwiZGVsZXRlZF9hdFwiOm51bGx9IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImlkIjoxLCJpYXQiOjE3MzQwMjc0NzgsImV4cCI6MTczNDAzMTA3OH0.kfmM7NlfR7qyUjinJWIQyJ86C8F9VNlkrDAR3Qsfipg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"123456\",\n    \"new_password\": \"654321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/users/change-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
