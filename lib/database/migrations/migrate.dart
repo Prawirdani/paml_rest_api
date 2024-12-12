@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:paml_rest_api/database/migrations/create_personal_access_tokens_table.dart';
+import 'package:paml_rest_api/database/migrations/create_users_table.dart';
 import 'package:vania/vania.dart';
 import 'create_customers_table.dart';
 import 'create_vendors_table.dart';
@@ -20,6 +22,8 @@ void main(List<String> args) async {
 
 class Migrate {
   registry() async {
+    await CreateUserTable().up();
+    await CreatePersonalAccessTokensTable().up();
     await CreateCustomersTable().up();
     await CreateVendorsTable().up();
     await CreateProductsTable().up();
@@ -35,5 +39,7 @@ class Migrate {
     await CreateProductsTable().down();
     await CreateVendorsTable().down();
     await CreateCustomersTable().down();
+    await CreatePersonalAccessTokensTable().down();
+    await CreateUserTable().down();
   }
 }
