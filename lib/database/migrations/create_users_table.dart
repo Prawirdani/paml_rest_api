@@ -7,7 +7,7 @@ class CreateUserTable extends Migration {
     await createTableNotExists('users', () {
       id();
       string('name');
-      string('email');
+      string('email', unique: true);
       string('password');
       dateTime("created_at", nullable: false);
       dateTime("updated_at", nullable: true);
