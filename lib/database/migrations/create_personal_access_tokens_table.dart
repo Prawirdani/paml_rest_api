@@ -9,7 +9,7 @@ class CreatePersonalAccessTokensTable extends Migration {
       tinyText('name');
       bigInt('tokenable_id');
       string('token');
-      timeStamp('last_used_at');
+      timeStamp('last_used_at', nullable: true);
       timeStamp('created_at');
       timeStamp('deleted_at', nullable: true);
 

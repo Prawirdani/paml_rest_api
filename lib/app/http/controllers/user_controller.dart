@@ -1,35 +1,72 @@
+import 'dart:io';
+
+import 'package:paml_rest_api/app/models/user.dart';
+import 'package:paml_rest_api/common/response.dart';
 import 'package:vania/vania.dart';
 
 class UserController extends Controller {
+  Future<Response> currentUser(Request req) async {
+    try {
+      final currUser = Auth().user();
+      if (currUser == null) {
+        return JsonResponse.send(
+          message: "User not identified",
+          status: HttpStatus.unauthorized,
+        );
+      }
 
-     Future<Response> index() async {
-          return Response.json({'message':'Hello World'});
-     }
+      // Omit password dari Map
+      currUser.remove('password');
 
-     Future<Response> create() async {
-          return Response.json({});
-     }
+      return JsonResponse.send(
+        message: "User identified",
+        data: currUser,
+      );
+    } catch (e) {
+      return JsonResponse.handleError(e);
+    }
+  }
 
-     Future<Response> store(Request request) async {
-          return Response.json({});
-     }
+  Future<Response> changePassword(Request req) async {
+    try {
+      req.validate({
+        'old_password': 'required',
+        'new_password': 'required|min_length:6',
+      }, {
+        'old_password.required': 'Password lama tidak boleh kosong',
+        'new_password.required': 'Password baru tidak boleh kosong',
+        'new_password.min_length': 'Password baru minimal 6 karakter',
+      });
 
-     Future<Response> show(int id) async {
-          return Response.json({});
-     }
+      final currUser = Auth().user();
+      if (currUser == null) {
+        return JsonResponse.send(
+          message: "User not identified",
+          status: HttpStatus.unauthorized,
+        );
+      }
+      // Validasi password lama
+      if (!Hash().verify(req.string('old_password'), currUser['password'])) {
+        return JsonResponse.send(
+          message: "Password lama tidak sesuai",
+          status: HttpStatus.unauthorized,
+        );
+      }
 
-     Future<Response> edit(int id) async {
-          return Response.json({});
-     }
+      // Update password user
+      final newHashedPassword = Hash().make(req.string('new_password'));
+      await User().query().where('id', "=", currUser['id']).update({
+        'password': newHashedPassword,
+        'updated_at': DateTime.now(),
+      });
 
-     Future<Response> update(Request request,int id) async {
-          return Response.json({});
-     }
-
-     Future<Response> destroy(int id) async {
-          return Response.json({});
-     }
+      return JsonResponse.send(
+        message: "Berhasil mengganti password",
+      );
+    } catch (e) {
+      return JsonResponse.handleError(e);
+    }
+  }
 }
 
 final UserController userController = UserController();
-

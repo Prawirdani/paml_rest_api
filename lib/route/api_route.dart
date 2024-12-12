@@ -1,7 +1,10 @@
+import 'package:paml_rest_api/app/http/controllers/auth_controller.dart';
 import 'package:paml_rest_api/app/http/controllers/customers_controller.dart';
 import 'package:paml_rest_api/app/http/controllers/orders_controller.dart';
 import 'package:paml_rest_api/app/http/controllers/products_controller.dart';
+import 'package:paml_rest_api/app/http/controllers/user_controller.dart';
 import 'package:paml_rest_api/app/http/controllers/vendors_controller.dart';
+import 'package:paml_rest_api/app/http/middleware/authenticate.dart';
 import 'package:vania/vania.dart';
 
 class ApiRoute implements Route {
@@ -9,6 +12,29 @@ class ApiRoute implements Route {
   void register() {
     /// Base RoutePrefix
     Router.basePrefix('api');
+
+    // Auth Routes
+    Router.group(
+      () {
+        Router.post("/register", AuthController().register);
+        Router.post("/login", AuthController().login);
+        Router.delete("/logout", AuthController().logout).middleware(
+          [AuthenticateMiddleware()],
+        );
+        Router.get("/refresh-token", AuthController().refreshToken);
+      },
+      prefix: "/auth",
+    );
+
+    // User Routes
+    Router.group(
+      () {
+        Router.get("/me", UserController().currentUser);
+        Router.put("/change-password", UserController().changePassword);
+      },
+      prefix: "/users",
+      middleware: [AuthenticateMiddleware()],
+    );
 
     // Vendors Routes
     Router.group(
@@ -20,6 +46,7 @@ class ApiRoute implements Route {
         Router.delete("/{id}", VendorsController().destroy);
       },
       prefix: "/vendors",
+      middleware: [AuthenticateMiddleware()],
     );
 
     // Products Routes
@@ -41,6 +68,7 @@ class ApiRoute implements Route {
         );
       },
       prefix: "/products",
+      middleware: [AuthenticateMiddleware()],
     );
 
     // Customers Routes
@@ -53,6 +81,7 @@ class ApiRoute implements Route {
         Router.delete("/{id}", CustomersController().destroy);
       },
       prefix: "/customers",
+      middleware: [AuthenticateMiddleware()],
     );
 
     // Orders Routes
@@ -73,10 +102,7 @@ class ApiRoute implements Route {
         );
       },
       prefix: "/orders",
+      middleware: [AuthenticateMiddleware()],
     );
-
-    Router.get("/ping", () {
-      return Response.json({"message": "Hello Vania"});
-    });
   }
 }
