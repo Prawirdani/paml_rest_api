@@ -1,3 +1,9 @@
+import 'package:paml_rest_api/app/models/user.dart';
+
 Map<String, dynamic> authConfig = {
-  'guards': {'default': {}}
+  'guards': {
+    'default': {
+      'provider': User(),
+    }
+  }
 };
